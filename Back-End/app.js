@@ -8,9 +8,10 @@ require("dotenv").config();
 const app = express();
 
 const allowedOrigins = [
-  "http://localhost:3000",
-  "http://localhost:4000",
   "http://localhost:5173",
+  "http://localhost:4000",
+  "https://react-calculator-frontend.vercel.app",
+  "https://react-calculator-backend.vercel.app",
 ];
 
 app.use(
