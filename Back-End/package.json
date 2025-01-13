@@ -1,7 +1,11 @@
 {
   "name": "back-end",
+  "description": "",
   "version": "1.0.0",
-  "main": "app.js",
+  "main": "server.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "scripts": {
     "dbinit": "psql -U postgres -f db/schema.sql",
     "dbseed": "psql -U postgres -f db/seed.sql",
@@ -17,9 +21,5 @@
     "pg": "^8.13.1",
     "pg-promise": "^11.10.2"
   },
-  "devDependencies": {},
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": ""
+  "devDependencies": {}
 }
