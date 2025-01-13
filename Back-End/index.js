@@ -45,4 +45,8 @@ app.get("*", (req, res) => {
   res.status(404).send("404 Not Found!");
 });
 
-module.exports = app;
+const PORT = 4000 || process.env.PORT;
+
+app.listen(PORT, () => {
+  console.log(`React calculator app listening on port ${PORT}`);
+});
