@@ -33,6 +33,8 @@ app.use((req, res, next) => {
   next();
 });
 
+app.options("*", cors());
+
 app.use(express.json());
 
 app.use("/users", usersController);
@@ -45,8 +47,4 @@ app.get("*", (req, res) => {
   res.status(404).send("404 Not Found!");
 });
 
-const PORT = 4000 || process.env.PORT;
-
-app.listen(PORT, () => {
-  console.log(`React calculator app listening on port ${PORT}`);
-});
+module.exports = app;
