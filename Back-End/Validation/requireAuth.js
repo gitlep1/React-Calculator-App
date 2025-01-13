@@ -1,55 +1,62 @@
 const jwt = require("jsonwebtoken");
 const JSK = process.env.JWT_SECRET;
+const { promisify } = require("util");
 
 const requireAuth = () => {
   return async (req, res, next) => {
     const authHeader = req.headers.authorization;
-    if (authHeader) {
-      const token = authHeader.split(" ")[1];
-      jwt.verify(token, JSK, async (err) => {
+
+    if (!authHeader) {
+      return res.status(401).json({ error: "Authorization header missing" });
+    }
+
+    const token = authHeader.split(" ")[1];
+
+    try {
+      const decoded = await promisify(jwt.verify)(token, JSK);
+
+      req.user = {
+        token,
+        decodedUser: decoded.user,
+      };
+
+      next();
+    } catch (err) {
+      if (err.name === "TokenExpiredError") {
         const decoded = jwt.decode(token);
-        if (err) {
-          if (err.message === "jwt expired") {
-            console.log(`${decoded.user.username}'s  token expired`);
 
-            try {
-              console.log(`Creating new token for ${decoded.user.username}`);
+        console.log(`${decoded.user.username}'s token expired`);
 
-              const newClientTokenPayload = {
-                user: decoded.user,
-                scopes: ["read:user", "write:user"],
-              };
+        try {
+          console.log(`Generating new token for ${decoded.user.username}`);
 
-              const newToken = jwt.sign(newClientTokenPayload, JSK, {
-                expiresIn: decoded.user.is_guest ? "1d" : "30d",
-              });
+          const newClientTokenPayload = {
+            user: decoded.user,
+            scopes: ["read:user", "write:user"],
+          };
 
-              res.setHeader("authorization", `Bearer ${newToken}`);
+          const newToken = jwt.sign(newClientTokenPayload, JSK, {
+            expiresIn: "30d",
+          });
 
-              req.user = {
-                token: newToken,
-              };
+          res.setHeader("authorization", `Bearer ${newToken}`);
+          req.user = {
+            token: newToken,
+            decodedUser: decoded.user,
+          };
 
-              console.log(`New token created for ${decoded.user.username}`);
-            } catch (error) {
-              console.error("Error generating new token:", { error });
-              return res.sendStatus(403);
-            }
-          } else {
-            console.error({ ERROR: err });
-            return res.sendStatus(403);
-          }
+          console.log(`New token created for ${decoded.user.username}`);
+          next();
+        } catch (error) {
+          console.error("Error generating new token:", error);
+          return res
+            .status(403)
+            .json({ error: "Failed to generate new token" });
         }
-
-        req.user = {
-          token,
-          decodedUser: decoded.user,
-        };
-
-        next();
-      });
-    } else {
-      res.sendStatus(401);
+      } else {
+        console.error("JWT verification error:", err);
+        return res.status(403).json({ error: "Invalid or malformed token" });
+      }
     }
   };
 };

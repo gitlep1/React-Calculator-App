@@ -9,4 +9,19 @@ const checkValues = (req, res, next) => {
   }
 };
 
-module.exports = { checkValues };
+const checkExtraEntries = (req, res, next) => {
+  const validFields = ["username", "password", "email"];
+  const keys = Object.keys(req.body);
+
+  const extraFields = keys.filter((key) => !validFields.includes(key));
+
+  if (extraFields.length > 0) {
+    res.status(400).json({
+      error: `You have extra keys: ${extraFields.join(", ")}.`,
+    });
+  } else {
+    next();
+  }
+};
+
+module.exports = { checkValues, checkExtraEntries };
