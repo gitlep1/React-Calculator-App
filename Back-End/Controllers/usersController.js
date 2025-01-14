@@ -12,9 +12,9 @@ const {
 } = require("../Queries/usersQueries");
 
 const {
-  checkValues,
-  checkExtraEntries,
-} = require("../validation/userValidation");
+  checkUserValues,
+  checkUserExtraEntries,
+} = require("../validation/entryValidation");
 const { requireAuth } = require("../validation/requireAuth");
 const { scopeAuth } = require("../validation/scopeAuth");
 
@@ -52,43 +52,48 @@ users.get(
   }
 );
 
-users.post("/signup", checkValues, checkExtraEntries, async (req, res) => {
-  try {
-    const { username, password, email } = req.body;
+users.post(
+  "/signup",
+  checkUserValues,
+  checkUserExtraEntries,
+  async (req, res) => {
+    try {
+      const { username, password, email } = req.body;
 
-    const userExists = await checkIfUserExists(email, password);
-    if (userExists) {
-      res.status(400).json({ error: "User already exists" });
-      return;
+      const userExists = await checkIfUserExists(email, password);
+      if (userExists) {
+        res.status(400).json({ error: "User already exists" });
+        return;
+      }
+
+      const newUserData = {
+        username,
+        password,
+        email,
+      };
+
+      const newUser = await createUser(newUserData);
+
+      const clientTokenPayload = {
+        user: newUser,
+        scopes: ["read:user", "write:user"],
+      };
+      console.log(
+        "=== POST User (clientTokenPayload)",
+        { clientTokenPayload },
+        "==="
+      );
+      const token = jwt.sign(clientTokenPayload, JSK, {
+        expiresIn: "30d",
+      });
+
+      res.status(200).json({ payload: newUser, token });
+    } catch (err) {
+      console.error("Error during user post:", err);
+      res.status(500).json({ error: err.message });
     }
-
-    const newUserData = {
-      username,
-      password,
-      email,
-    };
-
-    const newUser = await createUser(newUserData);
-
-    const clientTokenPayload = {
-      user: newUser,
-      scopes: ["read:user", "write:user"],
-    };
-    console.log(
-      "=== POST User (clientTokenPayload)",
-      { clientTokenPayload },
-      "==="
-    );
-    const token = jwt.sign(clientTokenPayload, JSK, {
-      expiresIn: "30d",
-    });
-
-    res.status(200).json({ payload: newUser, token });
-  } catch (err) {
-    console.error("Error during user post:", err);
-    res.status(500).json({ error: err.message });
   }
-});
+);
 
 users.put(
   "/user",
