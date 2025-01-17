@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { Signin } from "./Signin/Signin";
 import { Signup } from "./Signup/Signup";
+import { GoogleAuth } from "./GoogleAuth/GoogleAuth";
 
 export const Accountpage = () => {
   const [isSigningUp, setIsSigningUp] = useState(false);
@@ -13,12 +14,13 @@ export const Accountpage = () => {
 
   return (
     <div className="account-container">
-      <div>
+      <div className="account-content">
         {isSigningUp ? (
           <Signup handleSignUpClick={handleSignUpClick} />
         ) : (
           <Signin handleSignUpClick={handleSignUpClick} />
         )}
+        <GoogleAuth />
       </div>
     </div>
   );

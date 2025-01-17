@@ -3,6 +3,7 @@ const cors = require("cors");
 
 const usersController = require("./Controllers/usersController");
 const calculationsController = require("./Controllers/calculationsController");
+const googleAuth = require("./Validation/googleAuthValidation");
 
 require("dotenv").config();
 
@@ -29,6 +30,12 @@ app.use(
 );
 
 app.use((req, res, next) => {
+  res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
+  res.setHeader("Cross-Origin-Embedder-Policy", "require-corp");
+  next();
+});
+
+app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", req.headers.origin);
   res.header("Access-Control-Allow-Credentials", "true");
   next();
@@ -38,6 +45,7 @@ app.options("*", cors());
 
 app.use(express.json());
 
+app.use("/auth", googleAuth);
 app.use("/users", usersController);
 app.use("/calculations", calculationsController);
 
