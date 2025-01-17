@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import { screenVersionContext, themeContext } from "./Contexts";
+import { screenVersionContext, themeContext, authContext } from "./Contexts";
 import DetectScreenSize from "../CustomFunctions/DetectScreenSize";
 
 const GlobalContextProvider = ({ children }) => {
   const [screenVersion, setScreenVersion] = useState("desktop");
   const [themeState, setThemeState] = useState("dark");
+  const [authUser, setAuthUser] = useState({});
 
   useEffect(() => {
     const checkScreenVersion = () => {
@@ -25,7 +26,9 @@ const GlobalContextProvider = ({ children }) => {
   return (
     <screenVersionContext.Provider value={screenVersion}>
       <themeContext.Provider value={{ themeState, setThemeState }}>
-        {children}
+        <authContext.Provider value={{ authUser, setAuthUser }}>
+          {children}
+        </authContext.Provider>
       </themeContext.Provider>
     </screenVersionContext.Provider>
   );
