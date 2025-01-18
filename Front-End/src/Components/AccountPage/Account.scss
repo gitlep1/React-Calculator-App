@@ -1,5 +1,29 @@
 .account-container {
-  border: 3px solid white;
-  width: 50%;
+  width: 95%;
+  height: 95%;
   margin: 0 auto;
+  margin-top: 5em;
+
+  .auth-container {
+    width: 30%;
+
+    .form-input {
+      display: grid;
+      grid-template-columns: 125px 1fr;
+      justify-content: center;
+      align-items: center;
+      font-size: 25px;
+    }
+
+    .switch-auth-mode {
+      color: #0a58ca;
+      margin-top: 1em;
+      text-decoration: underline;
+
+      &:hover {
+        cursor: pointer;
+        color: #3370ca;
+      }
+    }
+  }
 }

@@ -58,21 +58,29 @@ users.post(
   checkUserExtraEntries,
   async (req, res) => {
     try {
-      const { username, password, email } = req.body;
+      const newUserData = {
+        username: req.body.username,
+        password: req.body.password,
+        email: req.body.email,
+      };
 
-      const userExists = await checkIfUserExists(email, password);
+      const userExists = await checkIfUserExists(
+        newUserData.email,
+        newUserData.password
+      );
       if (userExists) {
         res.status(400).json({ error: "User already exists" });
         return;
       }
 
-      const newUserData = {
-        username,
-        password,
-        email,
-      };
-
       const newUser = await createUser(newUserData);
+      const userDataForClient = {
+        theme: newUser.theme,
+        email: newUser.email,
+        username: newUser.username,
+        profileimg: newUser.profileimg,
+        last_online: newUser.last_online,
+      };
 
       const clientTokenPayload = {
         user: newUser,
@@ -87,7 +95,7 @@ users.post(
         expiresIn: "30d",
       });
 
-      res.status(200).json({ payload: newUser, token });
+      res.status(200).json({ payload: userDataForClient, token });
     } catch (err) {
       console.error("Error during user post:", err);
       res.status(500).json({ error: err.message });
@@ -107,7 +115,15 @@ users.put(
       const updatedUser = await updateUser(decoded.user.id, req.body);
       console.log("=== PUT User ", { updatedUser }, "===");
 
-      res.status(200).json({ payload: updatedUser });
+      const userDataForClient = {
+        theme: updatedUser.theme,
+        email: updatedUser.email,
+        username: updatedUser.username,
+        profileimg: updatedUser.profileimg,
+        last_online: updatedUser.last_online,
+      };
+
+      res.status(200).json({ payload: userDataForClient });
     } catch (err) {
       console.error("Error during user put:", err);
       res.status(500).json({ error: err.message });

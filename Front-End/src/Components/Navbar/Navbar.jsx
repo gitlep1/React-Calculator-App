@@ -1,21 +1,25 @@
 import "./Navbar.scss";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "react-bootstrap";
+import { Button, Image } from "react-bootstrap";
 
-import { themeContext } from "../../CustomContexts/Contexts";
+import { themeContext, authContext } from "../../CustomContexts/Contexts";
 
 import { IoIosSunny } from "react-icons/io";
 import { FaMoon } from "react-icons/fa";
 
+import Calcutor from "../../Images/Calcutor.png";
+
 export const Navbar = () => {
   const { themeState, setThemeState } = useContext(themeContext);
+  const { authUser } = useContext(authContext);
   const navigate = useNavigate();
 
   return (
     <nav className="navbar-container">
       <div className="nav-title">
         <h1>Calcutor</h1>
+        <Image src={Calcutor} id="nav-logo" />
       </div>
 
       <div className="navbar-links">
@@ -38,7 +42,7 @@ export const Navbar = () => {
             navigate("/account");
           }}
         >
-          Account
+          {Object.keys(authUser).length > 1 ? "Account" : "Sign In"}
         </h3>
         <h3
           onClick={() => {

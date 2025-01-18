@@ -4,10 +4,6 @@ import { Routes, Route } from "react-router-dom";
 export const Mobile = () => {
   return (
     <section className="mobile-container">
-      <div className="mobile-title">
-        <h1>Mobile App</h1>
-      </div>
-
       <div className="mobile-content">
         <Routes>
           <Route path="/">

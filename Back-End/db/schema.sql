@@ -19,7 +19,7 @@ CREATE TABLE users (
 DROP TABLE IF EXISTS calculations;
 CREATE TABLE calculations (
   id UUID DEFAULT uuid_generate_v4() NOT NULL PRIMARY KEY,
-  user_id UUID REFERENCES users(id) NOT NULL,
+  user_id UUID REFERENCES users(id) NOT NULL ON DELETE CASCADE,
   expression TEXT,
   result TEXT,
   date TIMESTAMP DEFAULT NOW()

@@ -9,10 +9,6 @@ import { Accountpage } from "../AccountPage/Account";
 export const Desktop = () => {
   return (
     <section className="desktop-container">
-      <div className="desktop-title">
-        <h1>Desktop App</h1>
-      </div>
-
       <div className="desktop-content">
         <Routes>
           <Route path="/">
