@@ -12,7 +12,7 @@ import Calcutor from "../../Images/Calcutor.png";
 
 export const Navbar = () => {
   const { themeState, setThemeState } = useContext(themeContext);
-  const { authState, setAuthState } = useContext(authContext);
+  const { authUser } = useContext(authContext);
   const navigate = useNavigate();
 
   return (
@@ -42,7 +42,7 @@ export const Navbar = () => {
             navigate("/account");
           }}
         >
-          {authState ? "Account" : "Sign In"}
+          {Object.keys(authUser).length > 1 ? "Account" : "Sign In"}
         </h3>
         <h3
           onClick={() => {

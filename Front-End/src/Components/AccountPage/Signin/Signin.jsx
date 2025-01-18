@@ -14,7 +14,7 @@ export const Signin = ({ handleSignUpClick }) => {
     <div className="auth-container">
       <h1>Sign In</h1>
       <Form className="auth-form">
-        <Form.Group className="mb-3 email-input" controlId="formBasicEmail">
+        <Form.Group className="mb-3 form-input" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -24,10 +24,7 @@ export const Signin = ({ handleSignUpClick }) => {
           />
         </Form.Group>
 
-        <Form.Group
-          className="mb-3 password-input"
-          controlId="formBasicPassword"
-        >
+        <Form.Group className="mb-3 form-input" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"

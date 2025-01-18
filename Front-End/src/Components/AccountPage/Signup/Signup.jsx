@@ -1,7 +1,11 @@
 import "./Signup.scss";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Form, Button, Image } from "react-bootstrap";
 import axios from "axios";
+
+import { authContext } from "../../../CustomContexts/Contexts";
+
+import { ToastNotify } from "../../../CustomFunctions/ToastNotify/ToastNotify";
 
 const API = import.meta.env.VITE_API_URL;
 
@@ -11,6 +15,8 @@ export const Signup = ({ handleSignUpClick }) => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+
+  const { authUser, setAuthUser } = useContext(authContext);
 
   const handleConfirmPassword = () => {
     if (password !== confirmPassword) {
@@ -29,29 +35,34 @@ export const Signup = ({ handleSignUpClick }) => {
       return;
     }
 
-    try {
-      await axios
-        .post(`${API}/users`, {
-          email,
-          password,
-        })
-        .then((res) => {
-          console.log(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    } catch (error) {
-      console.error(error);
-      setError(`An error occurred while signing up: ${error}`);
-    }
+    const userData = {
+      username,
+      password,
+      email,
+    };
+
+    await axios
+      .post(`${API}/users/signup`, userData)
+      .then((res) => {
+        setAuthUser(res.data.payload);
+      })
+      .catch((err) => {
+        setError(err.response.data.error);
+      })
+      .finally(() => {
+        // setUsername("");
+        // setPassword("");
+        // setConfirmPassword("");
+        // setEmail("");
+      });
   };
 
   return (
     <div className="auth-container">
+      <ToastNotify message={error} />
       <h1>Sign Up</h1>
       <Form className="auth-form" onSubmit={handleSubmit}>
-        <Form.Group className="mb-3 email-input" controlId="formBasicEmail">
+        <Form.Group className="mb-3 form-input" controlId="formBasicEmail">
           <Form.Label>Email</Form.Label>
           <Form.Control
             type="email"
@@ -64,10 +75,17 @@ export const Signup = ({ handleSignUpClick }) => {
           </p>
         </Form.Group>
 
-        <Form.Group
-          className="mb-3 password-input"
-          controlId="formBasicPassword"
-        >
+        <Form.Group className="mb-3 form-input" controlId="formBasicUsername">
+          <Form.Label>Username</Form.Label>
+          <Form.Control
+            type="text"
+            placeholder="Enter username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+        </Form.Group>
+
+        <Form.Group className="mb-3 form-input" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -78,7 +96,7 @@ export const Signup = ({ handleSignUpClick }) => {
         </Form.Group>
 
         <Form.Group
-          className="mb-3 password-input"
+          className="mb-3 form-input"
           controlId="formBasicConfirmPassword"
         >
           <Form.Label>Confirm Password</Form.Label>
@@ -88,7 +106,6 @@ export const Signup = ({ handleSignUpClick }) => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-          {error && <p style={{ color: "red" }}>{error}</p>}
         </Form.Group>
 
         <Button variant="primary" type="submit">
