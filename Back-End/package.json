@@ -2,11 +2,11 @@
   "name": "back-end",
   "description": "",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./api/index.js",
   "scripts": {
     "dbinit": "psql -U postgres -f db/schema.sql",
     "dbseed": "psql -U postgres -f db/seed.sql",
-    "start": "nodemon index.js"
+    "start": "nodemon ./api/index.js"
   },
   "keywords": [
     "calculator"
