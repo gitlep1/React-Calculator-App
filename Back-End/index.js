@@ -1,9 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 
-const usersController = require("../Controllers/usersController");
-const calculationsController = require("../Controllers/calculationsController");
-const googleAuth = require("../Validation/googleAuthValidation");
+const usersController = require("./Controllers/usersController");
+const calculationsController = require("./Controllers/calculationsController");
+const googleAuth = require("./Validation/googleAuthValidation");
 
 require("dotenv").config();
 
