@@ -27,7 +27,7 @@ users.get("/", requireAuth(), scopeAuth(["read:user"]), async (req, res) => {
 
     res.status(200).json({ payload: users });
   } catch (err) {
-    console.error("Error during users get:", err);
+    console.error("500 Error during users get:", err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -46,7 +46,7 @@ users.get(
 
       res.status(200).json({ payload: getUser });
     } catch (err) {
-      console.error("Error during user get ID:", err);
+      console.error("500 Error during user get ID:", err);
       res.status(500).json({ error: err.message });
     }
   }
@@ -69,8 +69,7 @@ users.post(
         newUserData.password
       );
       if (userExists) {
-        res.status(400).json({ error: "User already exists" });
-        return;
+        return res.status(400).json({ error: "User already exists" });
       }
 
       const newUser = await createUser(newUserData);
@@ -87,7 +86,7 @@ users.post(
         scopes: ["read:user", "write:user"],
       };
       console.log(
-        "=== POST User (clientTokenPayload)",
+        "=== POST User (signup) (clientTokenPayload)",
         { clientTokenPayload },
         "==="
       );
@@ -97,11 +96,53 @@ users.post(
 
       res.status(200).json({ payload: userDataForClient, token });
     } catch (err) {
-      console.error("Error during user post:", err);
+      console.error("500 Error during user post:", err);
       res.status(500).json({ error: err.message });
     }
   }
 );
+
+users.post("/signin", async (req, res) => {
+  try {
+    const userData = {
+      email: req.body.email,
+      password: req.body.password,
+    };
+
+    const checkUser = await checkIfUserExists(userData);
+    if (checkUser) {
+      const userDataForClient = {
+        theme: checkUser.theme || null,
+        email: checkUser.email,
+        username: checkUser.username,
+        profileimg: checkUser.profileimg || null,
+        last_online: checkUser.last_online,
+      };
+
+      const clientTokenPayload = {
+        user: checkUser,
+        scopes: ["read:user", "write:user"],
+      };
+      const token = jwt.sign(clientTokenPayload, JSK, {
+        expiresIn: "30d",
+      });
+      console.log(
+        "=== POST User (signin) (clientTokenPayload)",
+        { clientTokenPayload },
+        "==="
+      );
+
+      res.status(200).json({ payload: userDataForClient, token });
+    } else {
+      return res
+        .status(400)
+        .json({ error: "No users with these credentials found" });
+    }
+  } catch (err) {
+    console.error("500 Error during users (signin) get:", err);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 users.put(
   "/user",
@@ -112,7 +153,20 @@ users.put(
       const { token } = req.user;
       const decoded = jwt.decode(token);
 
-      const updatedUser = await updateUser(decoded.user.id, req.body);
+      const { profileimg, email, username, password, theme } = req.body;
+
+      const oldUserData = await getUserByID(decoded.user.id);
+
+      const newUserData = {
+        profileimg: profileimg !== "" ? profileimg : oldUserData.profileimg,
+        email: email !== "" ? email : oldUserData.email,
+        username: username !== "" ? username : oldUserData.username,
+        password: password !== "" ? password : oldUserData.password,
+        theme: theme !== "" ? theme : oldUserData.theme,
+        last_online: new Date().toISOString(),
+      };
+
+      const updatedUser = await updateUser(decoded.user.id, newUserData);
       console.log("=== PUT User ", { updatedUser }, "===");
 
       const userDataForClient = {
@@ -125,7 +179,7 @@ users.put(
 
       res.status(200).json({ payload: userDataForClient });
     } catch (err) {
-      console.error("Error during user put:", err);
+      console.error("500 Error during user put:", err);
       res.status(500).json({ error: err.message });
     }
   }
@@ -145,7 +199,7 @@ users.delete(
 
       res.status(200).json({ payload: deletedUser });
     } catch (err) {
-      console.error("Error during user delete:", err);
+      console.error("500 Error during user delete:", err);
       res.status(500).json({ error: err.message });
     }
   }

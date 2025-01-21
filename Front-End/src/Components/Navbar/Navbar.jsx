@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Image } from "react-bootstrap";
 
-import { themeContext, authContext } from "../../CustomContexts/Contexts";
+import { themeContext, userContext } from "../../CustomContexts/Contexts";
 
 import { IoIosSunny } from "react-icons/io";
 import { FaMoon } from "react-icons/fa";
@@ -12,7 +12,7 @@ import Calcutor from "../../Images/Calcutor.png";
 
 export const Navbar = () => {
   const { themeState, setThemeState } = useContext(themeContext);
-  const { authUser } = useContext(authContext);
+  const { authUser } = useContext(userContext);
   const navigate = useNavigate();
 
   return (
@@ -20,6 +20,17 @@ export const Navbar = () => {
       <div className="nav-title">
         <h1>Calcutor</h1>
         <Image src={Calcutor} id="nav-logo" />
+        {authUser && (
+          <p className="nav-logged-in-user">
+            Logged in as, {authUser.username}
+            <Image
+              src={
+                authUser.profileimg !== null ? authUser.profileimg : undefined
+              }
+              id="nav-logged-in-user-profileimg"
+            />
+          </p>
+        )}
       </div>
 
       <div className="navbar-links">
@@ -42,7 +53,7 @@ export const Navbar = () => {
             navigate("/account");
           }}
         >
-          {Object.keys(authUser).length > 1 ? "Account" : "Sign In"}
+          {authUser ? "Account" : "Sign In"}
         </h3>
         <h3
           onClick={() => {
@@ -53,30 +64,37 @@ export const Navbar = () => {
         </h3>
       </div>
 
-      <div
-        className={`nav-theme-switcher-outer-box ${
-          themeState === "dark" ? "theme-switcher-dark" : "theme-switcher-light"
-        }`}
-        style={
-          themeState === "dark"
-            ? { border: "1px solid whitesmoke" }
-            : { border: "1px solid black" }
-        }
-        onClick={() => {
-          setThemeState(themeState === "dark" ? "light" : "dark");
-        }}
-      >
+      <div className="nav-theme-switcher-container">
         <div
-          className="nav-theme-switcher-inner-box"
+          className={`nav-theme-switcher-outer-box ${
+            themeState === "dark"
+              ? "theme-switcher-dark"
+              : "theme-switcher-light"
+          }`}
           style={
             themeState === "dark"
-              ? { backgroundColor: "whitesmoke" }
-              : { backgroundColor: "black" }
+              ? { border: "1px solid whitesmoke" }
+              : { border: "1px solid black" }
           }
-        ></div>
+          onClick={() => {
+            setThemeState(themeState === "dark" ? "light" : "dark");
+          }}
+        >
+          <div
+            className="nav-theme-switcher-inner-box"
+            style={
+              themeState === "dark"
+                ? { backgroundColor: "whitesmoke" }
+                : { backgroundColor: "black" }
+            }
+          ></div>
 
-        <FaMoon id="nav-dark-logo" />
-        <IoIosSunny id="nav-light-logo" />
+          <FaMoon id="nav-dark-logo" />
+          <IoIosSunny id="nav-light-logo" />
+        </div>
+        {authUser && (
+          <p className="nav-theme-switcher-custom">Select Custom Theme</p>
+        )}
       </div>
     </nav>
   );

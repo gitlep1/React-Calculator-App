@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import GlobalContextProvider from "./CustomContexts/GlobalContextProvider";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "react-toastify/dist/ReactToastify.css";
 import "./index.scss";
 
 const ClientID = import.meta.env.GOOGLE_CLIENT_ID;

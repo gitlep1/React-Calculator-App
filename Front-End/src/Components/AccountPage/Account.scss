@@ -2,18 +2,39 @@
   width: 95%;
   height: 95%;
   margin: 0 auto;
-  margin-top: 5em;
+  margin-top: 1em;
+
+  .account-content {
+    .account-settings-container {
+      display: flex;
+      flex-direction: column;
+      height: 75dvh;
+
+      .account-settings-form {
+        height: 100%;
+        width: 50%;
+        margin: 0 auto;
+
+        .account-settings-user-profileimg-container {
+          display: grid;
+          grid-template-columns: 125px 1fr 100px;
+          gap: 0.3em;
+
+          #account-settings-user-profileimg {
+            width: 150px;
+          }
+        }
+
+        .account-settings-buttons {
+          display: flex;
+          justify-content: space-around;
+        }
+      }
+    }
+  }
 
   .auth-container {
     width: 30%;
-
-    .form-input {
-      display: grid;
-      grid-template-columns: 125px 1fr;
-      justify-content: center;
-      align-items: center;
-      font-size: 25px;
-    }
 
     .switch-auth-mode {
       color: #0a58ca;
@@ -26,4 +47,13 @@
       }
     }
   }
+}
+
+.form-input {
+  display: grid;
+  grid-template-columns: 125px 1fr;
+  justify-content: center;
+  align-items: center;
+  font-size: 25px;
+  margin-bottom: 0.5em;
 }

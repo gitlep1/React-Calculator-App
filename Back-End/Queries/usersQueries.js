@@ -38,14 +38,23 @@ const updateUser = async (id, user) => {
 };
 
 const deleteUser = async (id) => {
+  if (id === null || id === undefined) {
+    return false;
+  }
+
   const query = "DELETE FROM users WHERE id = $1 RETURNING *";
   const deletedUser = await db.oneOrNone(query, id);
   return deletedUser;
 };
 
-const checkIfUserExists = async (email, password) => {
+const checkIfUserExists = async (userData) => {
   const query = "SELECT * FROM users WHERE email = $1 AND password = $2";
-  const user = await db.oneOrNone(query, [email, password]);
+  const user = await db.oneOrNone(query, [userData.email, userData.password]);
+
+  if (!user) {
+    return null;
+  }
+
   return user;
 };
 

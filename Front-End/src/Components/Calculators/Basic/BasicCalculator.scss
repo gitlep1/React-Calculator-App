@@ -1,0 +1,116 @@
+.basic-calculator-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  height: 85dvh;
+
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+  }
+
+  .calculator {
+    width: 300px;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+
+    .calculator-display {
+      background: #222;
+      color: #fff;
+      text-align: right;
+      font-size: 1.5rem;
+      height: 4em;
+
+      .calculator-input {
+        background: transparent;
+        border: none;
+        width: 100%;
+        font-size: 1.5rem;
+        color: #fff;
+        text-align: right;
+        outline: none;
+        padding: 5px;
+      }
+
+      .calculator-result {
+        font-size: 1.2rem;
+        color: #00ff00;
+        margin-top: 5px;
+      }
+    }
+
+    .calculator-buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 5px;
+      padding: 10px;
+
+      button {
+        font-size: 1.2rem;
+        padding: 15px;
+        border: none;
+        background: #f0f0f0;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #ddd;
+        }
+
+        &.wide {
+          grid-column: span 2;
+        }
+      }
+
+      button:nth-child(3) {
+        background: #ffa500;
+        color: white;
+
+        &:hover {
+          background: #ff8c00;
+        }
+      }
+
+      button:nth-child(7) {
+        background: #ffa500;
+        color: white;
+
+        &:hover {
+          background: #ff8c00;
+        }
+      }
+
+      button:nth-child(11) {
+        background: #ffa500;
+        color: white;
+
+        &:hover {
+          background: #ff8c00;
+        }
+      }
+
+      button:nth-child(15) {
+        background: #ffa500;
+        color: white;
+
+        &:hover {
+          background: #ff8c00;
+        }
+      }
+
+      button:nth-child(18) {
+        background: #ffa500;
+        color: white;
+
+        &:hover {
+          background: #ff8c00;
+        }
+      }
+    }
+  }
+}
