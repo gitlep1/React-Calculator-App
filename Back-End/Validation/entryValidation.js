@@ -36,7 +36,7 @@ const checkCalcValues = (req, res, next) => {
 };
 
 const checkCalcExtraEntries = (req, res, next) => {
-  const validFields = ["expression", "result"];
+  const validFields = ["expression", "result", "calculator_type"];
   const keys = Object.keys(req.body);
 
   const extraFields = keys.filter((key) => !validFields.includes(key));

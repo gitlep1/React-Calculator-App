@@ -22,5 +22,5 @@ CREATE TABLE calculations (
   user_id UUID REFERENCES users(id) ON DELETE CASCADE NOT NULL,
   expression TEXT,
   result TEXT,
-  date TIMESTAMP DEFAULT NOW()
+  calculator_type TEXT
 );

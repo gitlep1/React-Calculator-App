@@ -20,11 +20,12 @@ const getCalculationByID = async (id) => {
 
 const createCalculation = async (calculation) => {
   const query =
-    "INSERT INTO calculations (user_id, expression, result) VALUES ($1, $2, $3) RETURNING *";
+    "INSERT INTO calculations (user_id, expression, result, calculator_type) VALUES ($1, $2, $3, $4) RETURNING *";
   const newCalculation = await db.oneOrNone(query, [
     calculation.user_id,
     calculation.expression,
     calculation.result,
+    calculation.calculator_type,
   ]);
   return newCalculation;
 };

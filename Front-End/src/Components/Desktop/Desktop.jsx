@@ -1,10 +1,10 @@
 import "./Desktop.scss";
-import { useState, useEffect, useContext } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import { Homepage } from "../HomePage/Homepage";
 import { Calculators } from "../Calculators/Calculators";
 import { Accountpage } from "../AccountPage/Account";
+import { About } from "../AboutPage/About";
 
 export const Desktop = () => {
   return (
@@ -15,7 +15,7 @@ export const Desktop = () => {
             <Route path="/" index element={<Homepage />} />
             <Route path="calculators" element={<Calculators />} />
             <Route path="account" element={<Accountpage />} />
-            <Route path="about" element={<h1>About</h1>} />
+            <Route path="about" element={<About />} />
           </Route>
         </Routes>
       </div>

@@ -89,6 +89,7 @@ calculations.post(
         user_id: jwt.decode(token).user.id,
         expression: req.body.expression,
         result: req.body.result,
+        calculator_type: req.body.calculator_type,
       };
 
       const newCalculation = await createCalculation(calculationData);

@@ -1,5 +1,12 @@
+$small-mobile: 400px;
+$medium-mobile: 500px;
+$large-mobile: 600px;
+
+$small-desktop: 800px;
+$medium-desktop: 1000px;
+$large-desktop: 1200px;
+
 .app {
-  background-color: aquamarine;
   height: 100dvh;
   width: 100dvw;
 }
@@ -14,4 +21,11 @@
   color: black;
   background-color: #dcdcdc;
   transition: 1s;
+}
+
+@media screen and (max-width: 799px) {
+  .app {
+    height: 100%;
+    width: 100%;
+  }
 }

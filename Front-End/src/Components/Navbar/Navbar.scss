@@ -25,8 +25,6 @@ $large-desktop: 1200px;
     }
 
     .nav-logged-in-user {
-      // border: 3px solid red;
-
       #nav-logged-in-user-profileimg {
         width: 25px;
       }
@@ -141,10 +139,10 @@ $large-desktop: 1200px;
   }
 }
 
-@media screen and (max-width: #{$small-mobile}) {
+@media screen and (max-width: 799px) {
   .navbar-container {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
+    grid-template-columns: 1;
     text-align: center;
     justify-content: center;
 
@@ -164,7 +162,7 @@ $large-desktop: 1200px;
               transform: scale(1);
             }
             100% {
-              transform: scale(2);
+              transform: scale(1.5);
             }
           }
         }

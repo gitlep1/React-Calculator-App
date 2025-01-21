@@ -34,7 +34,11 @@ export const BasicCalculator = () => {
           },
         })
         .then((res) => {
-          setHistory(res.data.payload);
+          const DBHistory = res.data.payload;
+          const basicHistory = DBHistory.filter(
+            (calc) => calc.calculator_type === "basic"
+          );
+          setHistory(basicHistory);
         })
         .catch((err) => {
           console.error("Error fetching user calculations:", err);
@@ -84,6 +88,7 @@ export const BasicCalculator = () => {
     const calculationData = {
       expression,
       result,
+      calculator_type: "basic",
     };
     const token = JSON.parse(tokenData);
 
@@ -101,11 +106,19 @@ export const BasicCalculator = () => {
             },
           })
           .then((res) => {
-            setHistory(res.data.payload);
+            const DBHistory = res.data.payload;
+            const basicHistory = DBHistory.filter(
+              (calc) => calc.calculator_type === "basic"
+            );
+            setHistory(basicHistory);
           })
           .catch((err) => {
             console.error("Error fetching user calculations:", err);
             setError(err.message);
+          })
+          .finally(() => {
+            setInput("");
+            setResult("");
           });
       })
       .catch((err) => {
@@ -136,12 +149,20 @@ export const BasicCalculator = () => {
               },
             })
             .then((res) => {
-              setHistory(res.data.payload);
+              const DBHistory = res.data.payload;
+              const basicHistory = DBHistory.filter(
+                (calc) => calc.calculator_type === "basic"
+              );
+              setHistory(basicHistory);
               setEditing(false);
             })
             .catch((err) => {
               console.error("Error fetching user calculations:", err);
               setError(err.message);
+            })
+            .finally(() => {
+              setInput("");
+              setResult("");
             });
         })
         .catch((err) => {
@@ -173,7 +194,11 @@ export const BasicCalculator = () => {
             },
           })
           .then((res) => {
-            setHistory(res.data.payload);
+            const DBHistory = res.data.payload;
+            const basicHistory = DBHistory.filter(
+              (calc) => calc.calculator_type === "basic"
+            );
+            setHistory(basicHistory);
           })
           .catch((err) => {
             console.error("Error fetching user calculations:", err);
@@ -186,8 +211,6 @@ export const BasicCalculator = () => {
   };
 
   const handleEditCalculation = async (calculationId) => {
-    const token = JSON.parse(tokenData);
-
     const calculation = history.find((calc) => calc.id === calculationId);
     setCalculationDataId(calculation.id);
 

@@ -9,6 +9,8 @@ import {
   tokenContext,
 } from "./CustomContexts/Contexts";
 import CustomToastContainers from "./CustomFunctions/CustomToasts/CustomToastContainers";
+import DetectScreenSize from "./CustomFunctions/DetectScreenSize";
+import SmallResolution from "./CustomFunctions/SmallResolution/SmallResolution";
 
 import { Navbar } from "./Components/Navbar/Navbar";
 import { Desktop } from "./Components/Desktop/Desktop";
@@ -17,11 +19,23 @@ import { Mobile } from "./Components/Mobile/Mobile";
 const App = () => {
   const screenVersion = useContext(screenVersionContext);
   const { themeState } = useContext(themeContext);
-  const { authUser, setAuthUser } = useContext(userContext);
-  const { authToken, setAuthToken } = useContext(tokenContext);
+  const { setAuthUser } = useContext(userContext);
+  const { setAuthToken } = useContext(tokenContext);
 
   const userData = Cookies.get("authUser") || null;
   const tokenData = Cookies.get("token") || null;
+
+  const [screenSize, setScreenSize] = useState(DetectScreenSize().width);
+
+  useEffect(() => {
+    const resizeSidebarInterval = setInterval(() => {
+      setScreenSize(DetectScreenSize().width);
+    }, 500);
+
+    return () => {
+      clearInterval(resizeSidebarInterval);
+    };
+  }, []);
 
   useEffect(() => {
     handleReauthUser();
@@ -48,6 +62,7 @@ const App = () => {
     >
       <Navbar />
       <CustomToastContainers />
+      {screenSize < 400 && <SmallResolution />}
       {screenVersion === "desktop" ? <Desktop /> : <Mobile />}
     </section>
   );
