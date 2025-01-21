@@ -14,7 +14,7 @@ const {
 const {
   checkUserValues,
   checkUserExtraEntries,
-} = require("../validation/entryValidation");
+} = require("../Validation/entryValidation");
 const { requireAuth } = require("../validation/requireAuth");
 const { scopeAuth } = require("../validation/scopeAuth");
 
@@ -128,7 +128,7 @@ users.post("/signin", async (req, res) => {
       });
       console.log(
         "=== POST User (signin) (clientTokenPayload)",
-        { clientTokenPayload },
+        { clientTokenPayload, token },
         "==="
       );
 

@@ -114,8 +114,9 @@ calculations.put(
         user_id: jwt.decode(token).user.id,
         expression: req.body.expression,
         result: req.body.result,
-        date: req.body.date,
       };
+
+      console.log("===== CALCID: ", id);
 
       const calculation = await getCalculationByID(id);
 

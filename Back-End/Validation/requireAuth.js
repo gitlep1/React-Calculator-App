@@ -11,6 +11,7 @@ const requireAuth = () => {
     }
 
     const token = authHeader.split(" ")[1];
+    console.log("=== requireAuth token", { token }, "===");
 
     try {
       const decoded = await promisify(jwt.verify)(token, JSK);
@@ -22,6 +23,7 @@ const requireAuth = () => {
 
       next();
     } catch (err) {
+      console.log("=== requireAuth err", { err }, "===");
       if (err.name === "TokenExpiredError") {
         const decoded = jwt.decode(token);
 
