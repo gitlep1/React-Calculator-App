@@ -19,8 +19,8 @@ export const Homepage = () => {
 
   return (
     <div className="homepage-container">
-      <h1>{timeOfDay}, Welcome to Our Website!</h1>
-      <p>Your personalized experience starts here. Enjoy your stay!</p>
+      <h1>{timeOfDay}, Welcome to Calcutor!</h1>
+      <p>Enjoy your stay!</p>
       <button
         className="cta-button"
         onClick={() => {
